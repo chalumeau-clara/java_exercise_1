@@ -47,7 +47,7 @@ public class Predict implements Command{
 
     @Override
     public String name() {
-        return "predict";
+        return "Predict";
     }
 
     @Override

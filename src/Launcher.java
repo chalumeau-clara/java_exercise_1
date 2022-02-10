@@ -15,6 +15,7 @@ public class Launcher {
         command.add(new Fibo());
         command.add(new Freq());
         command.add(new Quit());
+        command.add(new Predict());
 
         Boolean find = false;
         Boolean again = true;

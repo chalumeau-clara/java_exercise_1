@@ -8,65 +8,28 @@ import java.util.stream.Stream;
 
 public class Launcher {
 
-    public static int fibo(int nb) {
-        int pres = 0;
-        int actual = 1;
-        while (nb != 0) {
-            nb--;
-            int tmp = actual;
-            actual = pres + actual;
-            pres = tmp;
-        }
-        return pres;
-    }
-
-    public static void freq(String str){
-        str = str.replaceAll("[^A-Za-z0-9]+", " ");
-        str = str.toLowerCase(Locale.ROOT);
-        List<String> arr = Arrays.asList(str.split(" "));
-
-        if (str.isBlank()){
-            return;
-        }
-        var freqMap = arr.stream()
-                .collect(Collectors.groupingBy(s->s, Collectors.counting()));
-
-        List<String> li = null;
-        var max3 = freqMap.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).limit(3);
-        String l = max3.map(Map.Entry::getKey).collect(Collectors.joining(" "));
-        System.out.printf(l + "\n");
-    }
-
     public static void main(String[] args) throws IOException {
-        System.out.println("Welcome");
+        System.out.println("Welcome\n");
         Scanner console = new Scanner(System.in);
-        while (true)
-        {
-            String name = console.nextLine();
-            if (name.equals("quit")) {
-                break;
-            }
-            else if (name.equals("fibo")) {
-                int nb = console.nextInt();
-                int res = fibo(nb);
-                System.out.println(res);
-                String i = console.nextLine();
-            }
-            else if (name.equals("freq")) {
-                System.out.printf("Enter a path\n");
-                String path = console.nextLine();
-                Path filepath = Paths.get(path);
+        List<Command> command = new ArrayList<Command>();
+        command.add(new Fibo());
+        command.add(new Freq());
+        command.add(new Quit());
 
-                try {
-                    String content = Files.readString(filepath);
-                    freq(content);
-                }
-                catch (IOException e) {
-                    System.out.printf("Unreadable file: ");
-                    e.printStackTrace();
+        Boolean find = false;
+        Boolean again = true;
+        while (again)
+        {
+            System.out.println("Enter a command:");
+            find = false;
+            String name = console.nextLine();
+            for (Command com: command ){
+                if (name.equals(com.name())){
+                    again = com.run(console);
+                    find = true;
                 }
             }
-            else {
+            if (!find) {
                 System.out.println("Unknown command");
             }
             //console.close();
